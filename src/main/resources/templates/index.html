@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring Boot Thymeleaf Application - Bootstrap DataTable</title>
+
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--    <script th:src="@{https://code.jquery.com/jquery-3.5.1.slim.min.js}"></script>-->
+<!--    <script th:src="@{https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js}"></script>-->
+<!--    <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}"></script>-->
+
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Thymeleaf - Bootstrap DataTable</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-5 mb-5">
+            <h3>Customer List Datatable</h3>  <button type="button"
+                                                      class="btn btn-warning"
+                                                      data-toggle="modal"
+                                                      data-target="#create-customer"> Create Customer</button>
+            <table id="data" class="table table-bordered table-responsive" style="width: 100%">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Province</th>
+                    <th>Register Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Province</th>
+                    <th>Register Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </tfoot>
+            </table>
+
+<!--            create modal-->
+            <div class="modal fade" id="create-customer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="createLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 fw-bold" id="createLabel">
+                                Create Customer
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="createForm">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="create-name" class="form-label fw-bold">Name</label>
+                                    <input type="text" id="create-name" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="create-address" class="form-label fw-bold">Address</label>
+                                    <input type="text" id="create-address" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="create-city" class="form-label fw-bold">City</label>
+                                    <input type="text" name="" id="create-city" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="create-province" class="form-label fw-bold">Province</label>
+                                    <input type="text" name="" id="create-province" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="create-status" class="form-label fw-bold">Status</label>
+                                    <input type="text" name="" id="create-status" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <button class="btn btn-success" onclick="create()">
+                                    Create
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+<!--            update modal-->
+            <div class="modal fade" id="customer-update" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="updateLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form id="updateForm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5 fw-bold" id="updateLabel">
+                                    Update Customer
+                                </h1>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" id="update-id" class="form-control" readonly hidden/>
+                                <div class="mb-3">
+                                    <label for="update-name" class="form-label fw-bold">Name</label>
+                                    <input type="text" id="update-name" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update-address" class="form-label fw-bold">Address</label>
+                                    <input type="text" id="update-address" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update-city" class="form-label fw-bold">City</label>
+                                    <input type="text" name="" id="update-city" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update-province" class="form-label fw-bold">Province</label>
+                                    <input type="text" name="" id="update-province" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update-register-date" class="form-label fw-bold">Register Date</label>
+                                    <input type="date" name="" id="update-register-date" class="form-control" readonly/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update-status" class="form-label fw-bold">Status</label>
+                                    <input type="text" name="" id="update-status" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                    Close
+                                </button>
+                                <button class="btn btn-success">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{assets/datatable/datatables.js}"></script>
+<script th:src="@{assets/datatable/customer.js}"></script>
+
+</body>
+</html>
